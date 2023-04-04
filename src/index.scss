@@ -1,0 +1,66 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+body {
+	--border-radius: 1em;
+	--main-color: #90f;
+	--background-color: #d3b0e8;
+	--secondary-color: #571782;
+	--dark-color: #5e4370;
+	--light-contrast-color: #fff;
+	--contrast-color: #6f0;
+	--focus-on-black-color: #fff;
+}
+
+html,
+body {
+	overflow-x: hidden;
+	position: relative; /* needed for "overflow: hidden;" to work on safari */
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: "M PLUS Rounded 1c", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 2em;
+
+	background-color: var(--background-color, #d3b0e8);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	min-height: 100vh;
+	padding-top: 3.5em;
+	padding-bottom: 0.25em;
+
+	transition: padding 0.4s;
+
+	@media (width > 640px) {
+		padding-top: 0.25em;
+	}
+}
+
+#root {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+::selection {
+	color: var(--background-color);
+	background-color: var(--secondary-color);
+}
+
+:focus-visible {
+	outline: 0.1em solid var(--contrast-color);
+	outline-offset: 0.1em;
+	transition: outline-color 0.4s;
+}

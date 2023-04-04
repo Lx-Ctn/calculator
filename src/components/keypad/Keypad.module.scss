@@ -1,0 +1,39 @@
+.container {
+	display: grid;
+	grid-template-areas:
+		"secondary secondary secondary operation"
+		"default default default operation"
+		"default default default operation"
+		"default default default operation"
+		"default default default operation";
+	grid-template-columns: repeat(4, 2em);
+	grid-template-rows: repeat(5, 2em);
+
+	background-color: #000;
+	gap: 0.5em;
+	padding: 0.5em;
+	border-radius: calc(1.5 * var(--border-radius));
+	max-width: 10.5em;
+
+	transition: border-radius 0.6s;
+
+	& > div {
+		grid-area: default;
+
+		display: grid;
+		gap: 0.5em;
+		grid-template-columns: repeat(3, 2em);
+	}
+	.operation {
+		grid-area: operation;
+		grid-template-columns: 2em;
+		grid-template-rows: repeat(5, 2em);
+	}
+	.secondary {
+		grid-area: secondary;
+	}
+
+	:focus-visible {
+		outline-color: var(--focus-on-black-color, #fff);
+	}
+}
