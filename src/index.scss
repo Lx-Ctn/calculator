@@ -59,6 +59,10 @@ body {
 	background-color: var(--secondary-color);
 }
 
+:focus {
+	outline: none;
+}
+
 :focus-visible {
 	outline: 0.1em solid var(--contrast-color);
 	outline-offset: 0.1em;
