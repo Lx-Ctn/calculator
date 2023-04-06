@@ -1,7 +1,7 @@
 import "./App.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { StyleSelector, History, Screen, Keypad } from "./components";
+import { StyleSelector, History, Screen, Keypad, AlertIfObsolete } from "./components";
 
 import * as anim from "./utils/animation";
 import { getFormattedNumber } from "./utils/getFormattedNumber";
@@ -74,6 +74,7 @@ function App() {
 	//
 	return (
 		<>
+			<AlertIfObsolete />
 			<motion.header variants={anim.headerVariants} initial="initial" animate="animate" exit="exit">
 				<h1>Calc()</h1>
 			</motion.header>

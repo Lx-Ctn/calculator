@@ -1,0 +1,130 @@
+.alertModal {
+	position: absolute;
+	inset: 0;
+	z-index: 4;
+
+	display: grid;
+	place-content: center;
+	text-align: center;
+
+	background-color: #222d;
+
+	font-size: 0.8em;
+
+	div {
+		background-color: #ddd;
+		border-radius: 2em;
+		padding: 1em;
+
+		position: relative;
+		z-index: 1;
+	}
+
+	h2 {
+		font-size: 1.2em;
+	}
+
+	p {
+		margin: 0.5em auto 1em auto;
+		font-size: 0.7em;
+		max-width: 51ch;
+		text-align: justify;
+		text-align-last: center;
+	}
+
+	button,
+	a {
+		margin: 0.1em auto;
+
+		color: var(--main-color, hsl(276, 100%, 50%));
+		border-color: var(--main-color, hsl(276, 100%, 50%));
+		cursor: pointer;
+
+		transition: scale 0.3s;
+		&:hover {
+			scale: 1.03;
+		}
+	}
+}
+
+.primary {
+	display: inline-block;
+	text-decoration: none;
+	position: relative;
+	background-color: #fff;
+	border: 1px solid #222;
+	border-radius: 1em;
+	padding: 0.1em 0.7em;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: 1em;
+		box-shadow: 0 0 0.3em var(--main-color, hsl(276, 100%, 50%));
+
+		opacity: -1;
+		transition: opacity 0.4s;
+	}
+
+	&:hover::before {
+		opacity: 1;
+	}
+}
+
+.secondary {
+	display: block;
+	background: none;
+	border: none;
+	font-size: 0.7em;
+
+	border-bottom: 1px solid #222;
+}
+
+.alertIcon {
+	position: fixed;
+	bottom: 0.5em;
+	right: 0.5em;
+	width: 2em;
+	height: 2em;
+
+	font-size: 0.7em;
+	color: red;
+	border: 1px solid red;
+	border-radius: 1em;
+	background: #fff6;
+	box-shadow: 0 0 0.8em 0.2em #fff6;
+	cursor: pointer;
+}
+
+.svg {
+	max-width: 4em;
+	transition: rotate 1s;
+	&:hover {
+		rotate: 720deg;
+		transition: rotate 7s;
+
+		& > path {
+			rotate: -720deg;
+			transition: rotate 7s;
+		}
+	}
+
+	& > path {
+		fill: #cc1137;
+		transform-origin: center;
+		transition: rotate 1s;
+	}
+
+	g path {
+		fill: #86d;
+	}
+	g path:nth-child(1),
+	g path:nth-child(2) {
+		fill: none;
+		stroke: #86d;
+		stroke-width: 13;
+		stroke-linecap: round;
+		stroke-miterlimit: 10;
+	}
+}
