@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "./button/Button";
 import Styles from "./Keypad.module.scss";
@@ -8,6 +8,41 @@ import { getFormattedNumber } from "../../utils/getFormattedNumber";
 import { MAX_INPUT_LENGTH } from "../../utils/constants";
 
 const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef }) => {
+	useEffect(() => {
+		window.addEventListener("keypress", handleKeyboardOperations);
+		return () => {
+			window.removeEventListener("keypress", handleKeyboardOperations);
+		};
+	});
+
+	const handleKeyboardOperations = event => {
+		switch (event.key) {
+			case "Enter":
+			case "=":
+				handleOperation("=");
+				break;
+			case "+":
+				handleOperation("+");
+				break;
+			case "-":
+				// Input allows "-" for typing, we don't want to activate a substraction at the same time
+				inputRef.current !== document.activeElement && handleOperation("−");
+				break;
+			case "/":
+				handleOperation("÷");
+				break;
+			case "*":
+			case "x":
+				handleOperation("×");
+				break;
+			case "%":
+				handleSecondaryAction.percentage();
+				break;
+			default:
+				break;
+		}
+	};
+
 	const updateCurrentValue = newValue => {
 		setCurrent({ ...current, value: newValue, display: newValue });
 	};

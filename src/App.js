@@ -14,6 +14,9 @@ TODO:
 - useReducer
 - useMemo/callback
 - typo temps de chargement
+- reset history should keep the number on screen.
+- last result stay display on screen, but when erase : it should'nt reappear
+- vérifier le css des boutton d'action secondaire : bug sur la taille lors de la rotation sur safari -> bug de scale en fait sur safari
 */
 
 function App() {

@@ -53,10 +53,12 @@
 		transition: scale 0.2s, background 0.2s, border-color 0.2s, color 0.2s;
 
 		&:hover {
+			transform-origin: center;
 			scale: 1.1;
 			background: #000;
 			border-color: #000;
 			color: #fff;
+			cursor: pointer;
 		}
 	}
 

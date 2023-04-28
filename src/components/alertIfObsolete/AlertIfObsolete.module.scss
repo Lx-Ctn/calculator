@@ -117,12 +117,12 @@
 	}
 
 	g path {
-		fill: #86d;
+		fill: hsl(280, 30%, 70%);
 	}
 	g path:nth-child(1),
 	g path:nth-child(2) {
 		fill: none;
-		stroke: #86d;
+		stroke: hsl(280, 30%, 70%);
 		stroke-width: 13;
 		stroke-linecap: round;
 		stroke-miterlimit: 10;
