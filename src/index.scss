@@ -14,10 +14,12 @@ body {
 	--main-color: #90f;
 	--background-color: #d3b0e8;
 	--secondary-color: #571782;
+	--secondary-button-color: #d3b0e8;
+	--default-button-color: #333333;
 	--dark-color: #5e4370;
 	--light-contrast-color: #fff;
 	--contrast-color: #6f0;
-	--focus-on-black-color: #fff;
+	--contrast-on-black-color: #fff;
 }
 
 html,
@@ -58,8 +60,8 @@ body {
 }
 
 ::selection {
-	color: var(--background-color);
-	background-color: var(--secondary-color);
+	color: var(--dark-color);
+	background-color: var(--contrast-on-black-color);
 }
 
 :focus {

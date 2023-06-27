@@ -1,6 +1,6 @@
 .container {
 	button {
-		background-color: #333;
+		background-color: var(--default-button-color, #333);
 		color: #fff;
 		width: 2em;
 		height: 2em;
@@ -30,7 +30,7 @@
 	}
 
 	.secondary {
-		background-color: #aaa;
+		background-color: var(--secondary-button-color, #aaa);
 		color: #000;
 		font-size: 0.8em;
 		width: calc(2em / 0.8);

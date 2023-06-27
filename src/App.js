@@ -11,6 +11,7 @@ import { handleFocus } from "./utils/selectFocus";
 /*
 TODO:
 - factorisation
+- clean this CSS mess
 - useReducer
 - useMemo/callback
 - typo temps de chargement

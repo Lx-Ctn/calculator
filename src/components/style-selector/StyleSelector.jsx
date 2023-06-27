@@ -1,31 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Styles from "./StyleSelector.module.scss";
-import Color from "../../utils/Color";
-
-const DEFAULT_MAIN_COLOR = "#9900ff";
+import { DEFAULT_MAIN_COLOR, setColors } from "./defineColors";
 
 const appStyle = document.body.style;
-const setColors = color => {
-	const mainColor = new Color(color);
-	const backgroundColor = new Color(mainColor, sat => sat / 2, +30);
-	const secondaryColor = new Color(mainColor, -30, -20);
-	const darkColor = new Color(mainColor, -75, light => (light > 50 ? 35 : light < 20 ? 100 : light - 15));
-	const lightContrastColor = new Color(mainColor, -100, light => (light > 70 ? 0 : 100));
-	const contrastColor = new Color(mainColor, 40, light => (light < 30 ? 100 : light > 80 ? 0 : -2 * light + 160));
-	contrastColor.hueOffset = 160;
-	const focusOnBlackColor = new Color(mainColor, +40, light => (light < 50 ? 50 : light));
-	focusOnBlackColor.hueOffset = 160;
-
-	appStyle.setProperty("--main-color", mainColor.toHsl());
-	appStyle.setProperty("--background-color", backgroundColor.toHsl());
-	appStyle.setProperty("--secondary-color", secondaryColor.toHsl());
-	appStyle.setProperty("--dark-color", darkColor.toHsl());
-	appStyle.setProperty("--light-contrast-color", lightContrastColor.toHsl());
-	appStyle.setProperty("--contrast-color", contrastColor.toHsl());
-	appStyle.setProperty("--focus-on-black-color", focusOnBlackColor.toHsl());
-};
-
 const StyleSelector = props => {
 	const [isOpen, setOpen] = useState(false);
 	useEffect(() => {

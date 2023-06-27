@@ -51,7 +51,7 @@
 			}
 
 			&:focus-visible::selection {
-				background-color: var(--focus-on-black-color, #fff);
+				background-color: var(--contrast-on-black-color, #fff);
 				color: #111;
 			}
 		}
