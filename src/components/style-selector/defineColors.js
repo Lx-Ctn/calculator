@@ -37,16 +37,19 @@ const lightContrastColor = new Color(mainColor, {
 
 // Better contrast on selection, focus, tab navigation...:
 const contrastColor = new Color(mainColor, {
-	hue: 180,
-	saturation: 40,
+	hue: +180,
+	saturation: +40,
 	light: light => (light < 30 ? 100 : light > 80 ? 0 : -2 * light + 160),
 });
 
 // Better contrast on selection, focus, tab navigation... :
-const contrastOnBlackColor = new Color(mainColor, {
-	hue: 180,
-	saturation: 40,
-	light: light => (light < 60 ? 60 : light),
+const contrastOnBlackColor = new Color({
+	ref: mainColor,
+	offsets: {
+		hue: +180,
+		saturation: +40,
+		light: light => (light < 60 ? ((60 - light) / 60) * (95 - 60) + 60 : light > 85 ? 85 : light),
+	},
 });
 
 const appStyle = document.body.style;
