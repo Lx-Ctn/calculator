@@ -1,0 +1,72 @@
+@layer reset, global, app;
+@import "reset.scss" layer(reset);
+
+@layer global {
+	:root {
+		--ico: red;
+	}
+	* {
+		margin: 0;
+		padding: 0;
+		font-size: inherit;
+		font-family: inherit;
+	}
+
+	body {
+		--border-radius: 1em;
+		--main-color: #90f;
+		--background-color: #d3b0e8;
+		--secondary-color: #571782;
+		--secondary-button-color: #d3b0e8;
+		--default-button-color: #333333;
+		--dark-color: #5e4370;
+		--light-contrast-color: #fff;
+		--contrast-color: #6f0;
+		--contrast-on-black-color: #fff;
+	}
+
+	html,
+	body {
+		overflow-x: hidden;
+		position: relative; /* needed for "overflow: hidden;" to work on safari */
+		scroll-behavior: smooth;
+	}
+
+	body {
+		font-family: "M PLUS Rounded 1c", sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		font-size: 2em;
+
+		background-color: var(--background-color, #d3b0e8);
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		min-height: 100vh;
+		padding-top: 3.5em;
+		padding-bottom: 0.25em;
+
+		transition: padding 0.4s;
+
+		@media (width > 640px) {
+			padding-top: 0.25em;
+		}
+	}
+
+	::selection {
+		color: #000;
+		background-color: var(--contrast-on-black-color);
+	}
+
+	:focus {
+		outline: none;
+	}
+
+	:focus-visible {
+		outline: 0.1em solid var(--contrast-color);
+		outline-offset: 0.1em;
+		transition: outline-color 0.4s;
+	}
+}

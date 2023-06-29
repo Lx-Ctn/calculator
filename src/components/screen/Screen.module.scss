@@ -21,6 +21,7 @@
 		width: 1.3em;
 		font-size: 0.8em;
 
+		// When a operation is active :
 		&.withBorder {
 			border-right: 1px solid #333;
 		}

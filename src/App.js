@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./styles/App.scss";
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { StyleSelector, History, Screen, Keypad, AlertIfObsolete } from "./components";

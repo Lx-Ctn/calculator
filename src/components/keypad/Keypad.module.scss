@@ -34,6 +34,7 @@
 	}
 
 	:focus-visible {
+		// background always black for keypad
 		outline-color: var(--contrast-on-black-color, #fff);
 	}
 }

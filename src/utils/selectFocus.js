@@ -13,20 +13,29 @@ const inputMap = [[], [], [], [], [], []];
 let currentFocus = [0, 0];
 
 const getRefs = inputRef => {
+	// ["screen"] :
 	inputMap[0].push(inputRef);
+
+	// ["AC", "+-", "%", "x"] :
 	inputMap[1].push(...buttons.secondary.map(el => el.ref)); // AC ± %
 	inputMap[1].push(buttons.operation[0].ref); // x
+
+	// [7, 8, 9, "/"] :
 	inputMap[2].push(...buttons.digit.filter((_, i) => i < 3).map(el => el.ref)); // 7 8 9
 	inputMap[2].push(buttons.operation[1].ref); // /
+
+	// [4, 5, 6, "+"] :
 	inputMap[3].push(...buttons.digit.filter((_, i) => i >= 3 && i < 6).map(el => el.ref)); // 4 5 6
 	inputMap[3].push(buttons.operation[2].ref); // +
+
+	// [1, 2, 3, "-"] :
 	inputMap[4].push(...buttons.digit.filter((_, i) => i >= 6 && i < 9).map(el => el.ref)); // 1 2 3
 	inputMap[4].push(buttons.operation[3].ref); // -
+
+	// [0, ".", "="] :
 	inputMap[5].push(...buttons.digit.filter((_, i) => i >= 9).map(el => el.ref)); // 0 .
 	inputMap[5].unshift(inputMap[5][0]); // 0 0 .
 	inputMap[5].push(buttons.operation[4].ref); // =
-
-	console.log(inputMap);
 };
 
 export const handleFocus = inputRef => {
