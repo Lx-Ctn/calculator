@@ -83,7 +83,7 @@ function App() {
 
 			<motion.main variants={anim.mainVariants} initial="initial" animate="animate" exit="exit">
 				<StyleSelector />
-				<History historyData={oldValues} setOldValues={setOldValues} />
+				<History historyData={oldValues} setOldValues={setOldValues} setCurrent={setCurrent} />
 				<Screen
 					current={current}
 					setCurrent={setCurrent}

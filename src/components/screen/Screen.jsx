@@ -15,8 +15,6 @@ const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) =>
 
 	// Will display current value first,
 	// Keep last result on screen until a new value is set,
-
-	// To do : Keep last value on screen until a new value is set if no last result (new operation) : -> but keep prev on screen if AC
 	const getDisplayValue = isCurrentValue
 		? current.display
 		: result
