@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Styles from "./Screen.module.scss";
 import { sectionVariants, screenVariants } from "../../utils/animation";
 import { MAX_INPUT_LENGTH } from "../../utils/constants";
 
 const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) => {
+	const [isInputChanged, setIsInputChanged] = useState(false);
+	useEffect(() => {
+		setIsInputChanged(false);
+	}, [result]);
 	//
 	const getResultDisplayValue = result ? result.display : "0";
 	const isCurrentValue = current.value !== "";
@@ -13,11 +17,12 @@ const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) =>
 	// Keep last result on screen until a new value is set,
 
 	// To do : Keep last value on screen until a new value is set if no last result (new operation) : -> but keep prev on screen if AC
-	// To do : keep input empty when manualy (keyboard) erase instead of display last result
 	const getDisplayValue = isCurrentValue
 		? current.display
 		: result
-		? getResultDisplayValue
+		? isInputChanged
+			? "0"
+			: getResultDisplayValue
 		: current.operation !== ""
 		? prevDisplay
 		: "0";
@@ -36,6 +41,7 @@ const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) =>
 	};
 
 	const handleInputChange = () => {
+		setIsInputChanged(true);
 		let value = screenInputRef.current.value;
 		if (value.length <= MAX_INPUT_LENGTH && isValidInput(value)) {
 			value = value.replace(",", "."); // "," doesn't work with JS math
