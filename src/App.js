@@ -11,19 +11,17 @@ import { handleFocus } from "./utils/selectFocus";
 /*
 TODO:
 - factorisation
-- clean this CSS mess
 - useReducer
 - useMemo/callback
 - typo temps de chargement
 - reset history should keep the number on screen.
 - last result stay display on screen, but when erase : it should'nt reappear
-- vérifier le css des boutton d'action secondaire : bug sur la taille lors de la rotation sur safari -> bug de scale en fait sur safari
 */
 
 function App() {
-	const inputRef = useRef(null);
+	const screenInputRef = useRef(null);
 	useEffect(() => {
-		handleFocus(inputRef);
+		handleFocus(screenInputRef); // Keyboard navigation
 		handleResponsive();
 		window.addEventListener("resize", handleResponsive);
 		return () => window.removeEventListener("resize", handleResponsive);
@@ -90,7 +88,7 @@ function App() {
 					current={current}
 					setCurrent={setCurrent}
 					result={result}
-					inputRef={inputRef}
+					screenInputRef={screenInputRef}
 					prevDisplay={getPrevDisplay}
 				/>
 				<Keypad
@@ -99,7 +97,7 @@ function App() {
 					result={result}
 					setResult={setResult}
 					getResult={getResult}
-					inputRef={inputRef}
+					screenInputRef={screenInputRef}
 				/>
 			</motion.main>
 		</>

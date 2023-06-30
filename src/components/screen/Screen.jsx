@@ -4,14 +4,16 @@ import Styles from "./Screen.module.scss";
 import { sectionVariants, screenVariants } from "../../utils/animation";
 import { MAX_INPUT_LENGTH } from "../../utils/constants";
 
-const Screen = ({ inputRef, current, setCurrent, result, prevDisplay }) => {
+const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) => {
 	//
 	const getResultDisplayValue = result ? result.display : "0";
 	const isCurrentValue = current.value !== "";
 
 	// Will display current value first,
 	// Keep last result on screen until a new value is set,
+
 	// To do : Keep last value on screen until a new value is set if no last result (new operation) : -> but keep prev on screen if AC
+	// To do : keep input empty when manualy (keyboard) erase instead of display last result
 	const getDisplayValue = isCurrentValue
 		? current.display
 		: result
@@ -34,19 +36,8 @@ const Screen = ({ inputRef, current, setCurrent, result, prevDisplay }) => {
 	};
 
 	const handleInputChange = () => {
-		let value = inputRef.current.value;
-		if (
-			!(
-				(
-					value.length > MAX_INPUT_LENGTH ||
-					/[^\d.,-]/.test(value) || // must have only digit, minus, comma or dot
-					/^.+-/.test(value) || // minus must be only on first
-					/^[,.]/.test(value) || // must not start by dot or comma
-					/[,.].*[,.]/.test(value)
-				)
-				// must have only one dot or comma
-			)
-		) {
+		let value = screenInputRef.current.value;
+		if (value.length <= MAX_INPUT_LENGTH && isValidInput(value)) {
 			value = value.replace(",", "."); // "," doesn't work with JS math
 			setCurrent({ ...current, value, display: value });
 		}
@@ -57,7 +48,7 @@ const Screen = ({ inputRef, current, setCurrent, result, prevDisplay }) => {
 			<span className={current.operation.length ? Styles.withBorder : ""}>{current.operation}</span>
 			<div>
 				<motion.input
-					ref={inputRef}
+					ref={screenInputRef}
 					type="text"
 					inputMode="decimal"
 					value={getDisplayValue}
@@ -70,3 +61,9 @@ const Screen = ({ inputRef, current, setCurrent, result, prevDisplay }) => {
 	);
 };
 export default Screen;
+
+const isValidInput = value =>
+	!/[^\d.,-]/.test(value) && // must have only digit, minus, comma or dot
+	!/^.+-/.test(value) && // minus must be only on first
+	!/^[,.]/.test(value) && // must not start by dot or comma
+	!/[,.].*[,.]/.test(value); // must have only one dot or comma

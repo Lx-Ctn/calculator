@@ -1,20 +1,22 @@
 import { buttons } from "./operations";
 
-/* inputMap = [
-	["screen"],
-	["AC", "+-", "%", "x"],
-	[7, 8, 9, "/"],
-	[4, 5, 6, "+"],
-	[1, 2, 3, "-"],
-	[0, ".", "="],
-]; */
+/* 
+Mapping button element position to navigate with keyboard :
+*/
 
-const inputMap = [[], [], [], [], [], []];
+const inputMap = [
+	[], // ["screen"],
+	[], // ["AC", "+-", "%", "x"],
+	[], // [7, 8, 9, "/"],
+	[], // [4, 5, 6, "+"],
+	[], // [1, 2, 3, "-"],
+	[], // [0, ".", "="],
+];
 let currentFocus = [0, 0];
 
-const getRefs = inputRef => {
+const getRefs = screenInputRef => {
 	// ["screen"] :
-	inputMap[0].push(inputRef);
+	inputMap[0].push(screenInputRef);
 
 	// ["AC", "+-", "%", "x"] :
 	inputMap[1].push(...buttons.secondary.map(el => el.ref)); // AC ± %
@@ -38,8 +40,8 @@ const getRefs = inputRef => {
 	inputMap[5].push(buttons.operation[4].ref); // =
 };
 
-export const handleFocus = inputRef => {
-	getRefs(inputRef);
+export const handleFocus = screenInputRef => {
+	getRefs(screenInputRef);
 
 	inputMap.forEach((row, rowIndex) => {
 		row.forEach((ref, refIndex) => {

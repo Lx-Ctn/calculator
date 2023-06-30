@@ -7,7 +7,7 @@ import { sectionVariants, digitButtonsVariants, operationButtonsVariants } from 
 import { getFormattedNumber } from "../../utils/getFormattedNumber";
 import { MAX_INPUT_LENGTH } from "../../utils/constants";
 
-const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef }) => {
+const Keypad = ({ current, setCurrent, result, setResult, getResult, screenInputRef }) => {
 	useEffect(() => {
 		window.addEventListener("keypress", handleKeyboardOperations);
 		return () => {
@@ -26,7 +26,7 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef })
 				break;
 			case "-":
 				// Input allows "-" for typing, we don't want to activate a substraction at the same time
-				inputRef.current !== document.activeElement && handleOperation("−");
+				screenInputRef.current !== document.activeElement && handleOperation("−");
 				break;
 			case "/":
 				handleOperation("÷");
@@ -57,8 +57,8 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef })
 		// Show the red caret if the value is too long :
 		const isValueTooLong = newValue.length > MAX_INPUT_LENGTH;
 		if (isValueTooLong) {
-			inputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
-			inputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
+			screenInputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
+			screenInputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
 		} else updateCurrentValue(newValue);
 	};
 	const handleOperation = operation => {
