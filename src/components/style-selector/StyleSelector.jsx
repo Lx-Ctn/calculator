@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Styles from "./StyleSelector.module.scss";
+import css from "./StyleSelector.module.scss";
 import { DEFAULT_MAIN_COLOR, setColors } from "./defineColors";
 
 //
@@ -16,7 +16,7 @@ const StyleSelector = () => {
 
 	return (
 		<motion.aside
-			className={Styles.container}
+			className={css._}
 			variants={variants.container}
 			initial={false}
 			animate={isOpen ? "open" : "close"}
@@ -31,7 +31,7 @@ const StyleSelector = () => {
 					name="style"
 					type="radio"
 					value="round"
-					className={Styles.round}
+					className={css.round}
 					onClick={() => changeStyleTo("round")}
 					defaultChecked
 				></motion.input>
@@ -39,7 +39,7 @@ const StyleSelector = () => {
 					name="style"
 					type="radio"
 					value="square"
-					className={Styles.square}
+					className={css.square}
 					onClick={() => changeStyleTo("square")}
 				></motion.input>
 			</motion.div>

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "./button/Button";
-import Styles from "./Keypad.module.scss";
+import css from "./Keypad.module.scss";
 import { sectionVariants, digitButtonsVariants, operationButtonsVariants } from "../../utils/animation";
-import { buttons, getFormattedNumber, getResult } from "../../operations";
+import { buttons, getResult } from "../../operations";
 import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
 const Keypad = ({ state, dispatch, screenInputRef }) => {
-	const { current, result } = state;
+	const { current } = state;
 	useEffect(() => {
 		window.addEventListener("keypress", handleKeyboardOperations);
 		return () => {
@@ -69,32 +69,13 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 	};
 
 	const handleSecondaryAction = {
-		reset: () => {
-			dispatch({ type: "set_result", result: null });
-			dispatch({ type: "set_current", current: { value: "", display: "0", operation: "" } });
-		},
-		toggleMinus: () => {
-			if (result !== null && current.value === "") {
-				const newValues = getFormattedNumber(result.value * -1);
-				dispatch({ type: "set_result", result: { ...newValues } });
-			} else {
-				const newValues = getFormattedNumber(current.value * -1);
-				dispatch({ type: "set_current", current: { ...current, ...newValues } });
-			}
-		},
-		percentage: () => {
-			if (result !== null && current.value === "") {
-				const newValues = getFormattedNumber(result.value / 100);
-				dispatch({ type: "set_result", result: { ...newValues } });
-			} else {
-				const newValues = getFormattedNumber(current.value / 100);
-				dispatch({ type: "set_current", current: { ...current, ...newValues } });
-			}
-		},
+		reset: () => dispatch({ type: "reset" }),
+		toggleMinus: () => dispatch({ type: "toggle_minus" }),
+		percentage: () => dispatch({ type: "percentage" }),
 	};
 
 	return (
-		<motion.section className={Styles.container} variants={sectionVariants}>
+		<motion.section className={css._} variants={sectionVariants}>
 			<motion.div className="default" variants={digitButtonsVariants}>
 				{buttons.digit.map(({ digit }) => (
 					<Button key={digit} onClick={() => addToValue(digit)} isWide={digit === "0"}>
@@ -103,7 +84,7 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 				))}
 			</motion.div>
 
-			<motion.div className={Styles.operation} variants={operationButtonsVariants}>
+			<motion.div className={css.operation} variants={operationButtonsVariants}>
 				{buttons.operation.map(({ operation }) => (
 					<Button buttonStyle="operation" key={operation} onClick={() => handleOperation(operation)}>
 						{operation}
@@ -111,7 +92,7 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 				))}
 			</motion.div>
 
-			<motion.div className={Styles.secondary}>
+			<motion.div className={css.secondary}>
 				{buttons.secondary.map(({ action, secondary }) => (
 					<Button buttonStyle="secondary" key={action} onClick={handleSecondaryAction[action]}>
 						{secondary}

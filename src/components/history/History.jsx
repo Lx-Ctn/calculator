@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import Styles from "./History.module.scss";
+import css from "./History.module.scss";
 
 const History = ({ historyData, dispatch }) => {
 	const historyRef = useRef();
@@ -18,7 +18,7 @@ const History = ({ historyData, dispatch }) => {
 	};
 
 	return (
-		<motion.section aria-label="Operations history" className={Styles.container}>
+		<motion.section aria-label="Operations history" className={css._}>
 			<div>
 				<ul ref={historyRef}>
 					{historyData.map((data, index) => <li key={index}>{historyLineFormat(data)}</li>).reverse()}

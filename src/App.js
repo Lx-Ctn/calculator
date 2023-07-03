@@ -12,7 +12,7 @@ import { handleResponsive, handleFocus } from "./utils";
 TODO:
 - refactoring
 - useReducer
-- useMemo/callback
+- useMemo/callback ?
 - check loading time of the font 
 */
 
