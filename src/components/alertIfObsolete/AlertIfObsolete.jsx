@@ -9,6 +9,7 @@ And offer a direct link to update it base on which browser
 */
 
 const AlertIfObsolete = () => {
+	console.log("toto l'alert");
 	const obsoleteBrowser = isBrowserObsolete();
 	return <>{obsoleteBrowser ? <ObsoleteAlert browser={obsoleteBrowser} /> : null}</>;
 };

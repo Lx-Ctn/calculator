@@ -1,4 +1,4 @@
-import { buttons } from "./operations";
+import { buttons } from "../operations/buttonsModel";
 
 /* 
 Mapping button element position to navigate with keyboard :

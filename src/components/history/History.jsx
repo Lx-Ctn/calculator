@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Styles from "./History.module.scss";
 
-const History = ({ historyData, setOldValues, setCurrent }) => {
+const History = ({ historyData, dispatch }) => {
 	const historyRef = useRef();
 
 	// Keep the last result in view :
@@ -13,8 +13,8 @@ const History = ({ historyData, setOldValues, setCurrent }) => {
 
 	const clearHistory = () => {
 		const lastOperation = historyData[0];
-		setCurrent({ ...lastOperation.result, operation: "" });
-		setOldValues([]);
+		dispatch({ type: "set_current", current: { ...lastOperation.result, operation: "" } });
+		dispatch({ type: "set_old_values", oldValues: [] });
 	};
 
 	return (

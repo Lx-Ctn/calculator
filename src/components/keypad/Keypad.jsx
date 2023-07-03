@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "./button/Button";
 import Styles from "./Keypad.module.scss";
-import { buttons } from "../../utils/operations";
 import { sectionVariants, digitButtonsVariants, operationButtonsVariants } from "../../utils/animation";
-import { getFormattedNumber } from "../../utils/getFormattedNumber";
-import { MAX_INPUT_LENGTH } from "../../utils/constants";
+import { buttons, getFormattedNumber, getResult } from "../../operations";
+import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
-const Keypad = ({ current, setCurrent, result, setResult, getResult, screenInputRef }) => {
+const Keypad = ({ state, dispatch, screenInputRef }) => {
+	const { current, result } = state;
 	useEffect(() => {
 		window.addEventListener("keypress", handleKeyboardOperations);
 		return () => {
@@ -43,13 +43,9 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, screenInput
 		}
 	};
 
-	const updateCurrentValue = newValue => {
-		setCurrent({ ...current, value: newValue, display: newValue });
-	};
-
 	const addToValue = digit => {
 		const valueToUpdate =
-			current.value === "0" || current.value === "" ? (digit === "." ? "0" : "") : current.value.toString(); // loose the 1st 0 expect if "." follow
+			current.value === "0" || current.value === "" ? (digit === "." ? "0" : "") : current.value.toString(); // loose the 1st 0 unless "." follow
 
 		const authorisedDigit = digit === "." && valueToUpdate.includes(".") ? "" : digit; // only one "." is accepted
 		const newValue = valueToUpdate + authorisedDigit;
@@ -59,34 +55,40 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, screenInput
 		if (isValueTooLong) {
 			screenInputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
 			screenInputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
-		} else updateCurrentValue(newValue);
+		} else
+			dispatch({
+				type: "set_current",
+				current: { ...current, value: newValue, display: newValue },
+			});
 	};
+
 	const handleOperation = operation => {
-		(operation === "=" || current.value !== "" || current.operation === "") && getResult(operation);
-		setCurrent({ value: "", display: "0", operation });
+		(operation === "=" || current.value !== "" || current.operation === "") &&
+			getResult(operation, state, dispatch);
+		dispatch({ type: "set_current", current: { value: "", display: "0", operation } });
 	};
 
 	const handleSecondaryAction = {
 		reset: () => {
-			setResult(null);
-			setCurrent({ value: "", display: "0", operation: "" });
+			dispatch({ type: "set_result", result: null });
+			dispatch({ type: "set_current", current: { value: "", display: "0", operation: "" } });
 		},
 		toggleMinus: () => {
 			if (result !== null && current.value === "") {
 				const newValues = getFormattedNumber(result.value * -1);
-				setResult({ ...newValues });
+				dispatch({ type: "set_result", result: { ...newValues } });
 			} else {
 				const newValues = getFormattedNumber(current.value * -1);
-				setCurrent({ ...current, ...newValues });
+				dispatch({ type: "set_current", current: { ...current, ...newValues } });
 			}
 		},
 		percentage: () => {
 			if (result !== null && current.value === "") {
 				const newValues = getFormattedNumber(result.value / 100);
-				setResult({ ...newValues });
+				dispatch({ type: "set_result", result: { ...newValues } });
 			} else {
 				const newValues = getFormattedNumber(current.value / 100);
-				setCurrent({ ...current, ...newValues });
+				dispatch({ type: "set_current", current: { ...current, ...newValues } });
 			}
 		},
 	};

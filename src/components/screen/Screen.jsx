@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Styles from "./Screen.module.scss";
 import { sectionVariants, screenVariants } from "../../utils/animation";
-import { MAX_INPUT_LENGTH } from "../../utils/constants";
+import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
-const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) => {
+const Screen = ({ screenInputRef, state, dispatch }) => {
+	const { current, result, oldValues } = state;
+	const prevDisplay = oldValues.length ? oldValues[0].display : "0";
+
 	const [isInputChanged, setIsInputChanged] = useState(false);
 	useEffect(() => {
 		setIsInputChanged(false);
@@ -43,7 +46,7 @@ const Screen = ({ screenInputRef, current, setCurrent, result, prevDisplay }) =>
 		let value = screenInputRef.current.value;
 		if (value.length <= MAX_INPUT_LENGTH && isValidInput(value)) {
 			value = value.replace(",", "."); // "," doesn't work with JS math
-			setCurrent({ ...current, value, display: value });
+			dispatch({ type: "set_current", current: { ...current, value, display: value } });
 		}
 	};
 

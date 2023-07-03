@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import Styles from "./Button.module.scss";
 import { motion } from "framer-motion";
 import { buttonVariants } from "../../../utils/animation";
-import { buttons } from "../../../utils/operations";
+import { buttons } from "../../../operations/buttonsModel";
 
 const Button = props => {
 	const ref = useRef();

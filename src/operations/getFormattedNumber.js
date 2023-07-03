@@ -1,6 +1,6 @@
 //
-import { MAX_DIGIT_TO_DISPLAY } from "./constants";
-import { MAX_DECIMAL_WITH_SCI_NOTATION } from "./constants"; // 5 digit after the comma : 0,12345e+10
+import { MAX_DIGIT_TO_DISPLAY } from "../utils/CONSTANTS";
+import { MAX_DECIMAL_WITH_SCI_NOTATION } from "../utils/CONSTANTS"; // 5 digit after the comma : 0,12345e+10
 /*
 
 
