@@ -44,22 +44,14 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 	};
 
 	const addToValue = digit => {
-		const valueToUpdate =
-			current.value === "0" || current.value === "" ? (digit === "." ? "0" : "") : current.value.toString(); // loose the 1st 0 unless "." follow
-
-		const authorisedDigit = digit === "." && valueToUpdate.includes(".") ? "" : digit; // only one "." is accepted
-		const newValue = valueToUpdate + authorisedDigit;
+		const newValue = getCleanValue(current, digit);
 
 		// Show the red caret if the value is too long :
 		const isValueTooLong = newValue.length > MAX_INPUT_LENGTH;
 		if (isValueTooLong) {
 			screenInputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
 			screenInputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
-		} else
-			dispatch({
-				type: "set_current",
-				current: { ...current, value: newValue, display: newValue },
-			});
+		} else dispatch({ type: "set_current_value", value: newValue });
 	};
 
 	const handleOperation = operation => {
@@ -103,3 +95,13 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 	);
 };
 export default Keypad;
+
+const getCleanValue = (current, digit) => {
+	const valueIsNull = current.value === "0" || current.value === "";
+	// loose the 1st 0 unless "." follow :
+	const valueToUpdate = valueIsNull ? (digit === "." ? "0" : "") : current.value.toString();
+	// only one "." is accepted :
+	const authorisedDigit = digit === "." && valueToUpdate.includes(".") ? "" : digit;
+
+	return valueToUpdate + authorisedDigit;
+};

@@ -18,8 +18,22 @@ export const actions = {
 			: getFormattedNumber(state.current.value / 100);
 		return { current: { ...state.current, ...newValues } };
 	},
+	clear_history: (state, action) => {
+		const lastOperation = state.oldValues[0];
+		return {
+			current: { ...lastOperation.result, operation: "" },
+			oldValues: [],
+		};
+	},
 
-	//
+	// Basic actions :
+	set_current_value: (state, action) => ({
+		current: {
+			...state.current,
+			value: action.value,
+			display: action.value,
+		},
+	}),
 	set_current: (state, action) => ({ current: action.current }),
 	set_result: (state, action) => ({ result: action.result }),
 	set_old_values: (state, action) => ({ oldValues: action.oldValues }),

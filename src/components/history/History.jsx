@@ -11,11 +11,7 @@ const History = ({ historyData, dispatch }) => {
 		history.scrollTo(0, history.scrollHeight);
 	}, [historyData]);
 
-	const clearHistory = () => {
-		const lastOperation = historyData[0];
-		dispatch({ type: "set_current", current: { ...lastOperation.result, operation: "" } });
-		dispatch({ type: "set_old_values", oldValues: [] });
-	};
+	const clearHistory = () => dispatch({ type: "clear_history" });
 
 	return (
 		<motion.section aria-label="Operations history" className={css._}>
