@@ -1,6 +1,6 @@
 import { getFormattedNumber } from "./getFormattedNumber";
 
-export const getResult = (nextOperation, state, dispatch) => {
+export const getResult = (nextOperation, state) => {
 	const { current, result, oldValues } = state;
 
 	const isCurrentValue = current.value !== "" || result === null; // Last result act as current value if there is none.
@@ -24,14 +24,14 @@ export const getResult = (nextOperation, state, dispatch) => {
 
 	const total = operation ? getOperations[operation](prevValue, currentValue) : null;
 	const formattedTotal = total ? getFormattedNumber(total) : null;
-	dispatch({ type: "set_result", result: formattedTotal });
 
 	const formattedCurrent = { ...current, display: getFormattedNumber(current.value).display }; // Get rid of extra "0" and ending "."
 	const dataToSave = isCurrentValue ? formattedCurrent : old;
-	dispatch({
-		type: "set_old_values",
+
+	return {
+		result: formattedTotal,
 		oldValues: [{ ...dataToSave, result: formattedTotal }, ...oldValues],
-	});
+	};
 };
 
 const getOperations = {

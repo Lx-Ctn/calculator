@@ -1,6 +1,16 @@
-import { getFormattedNumber } from "../operations";
+import { getFormattedNumber, getResult } from "../operations";
 
 export const actions = {
+	// Operations :
+	operation: (state, action) => {
+		const isCompleteOperation =
+			action.operation === "=" || state.current.value !== "" || state.current.operation === "";
+		return {
+			...(isCompleteOperation && getResult(action.operation, state)),
+			current: { value: "", display: "0", operation: action.operation },
+		};
+	},
+
 	// Secondary actions :
 	reset: (state, action) => ({
 		current: { value: "", display: "0", operation: "" },

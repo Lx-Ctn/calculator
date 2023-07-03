@@ -50,7 +50,6 @@ export const handleFocus = screenInputRef => {
 			});
 		});
 	});
-
 	window.addEventListener("keydown", event => {
 		const [rowIndex, refIndex] = currentFocus;
 		switch (event.key) {

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Button from "./button/Button";
 import css from "./Keypad.module.scss";
 import { sectionVariants, digitButtonsVariants, operationButtonsVariants } from "../../utils/animation";
-import { buttons, getResult } from "../../operations";
+import { buttons } from "../../operations";
 import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
 const Keypad = ({ state, dispatch, screenInputRef }) => {
@@ -54,11 +54,7 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 		} else dispatch({ type: "set_current_value", value: newValue });
 	};
 
-	const handleOperation = operation => {
-		(operation === "=" || current.value !== "" || current.operation === "") &&
-			getResult(operation, state, dispatch);
-		dispatch({ type: "set_current", current: { value: "", display: "0", operation } });
-	};
+	const handleOperation = operation => dispatch({ type: "operation", operation });
 
 	const handleSecondaryAction = {
 		reset: () => dispatch({ type: "reset" }),
