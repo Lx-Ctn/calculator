@@ -1,9 +1,6 @@
 import { buttons } from "../operations/buttonsModel";
 
-/* 
-Mapping button element position to navigate with keyboard :
-*/
-
+// Mapping button element position to navigate with keyboard :
 const inputMap = [
 	[], // ["screen"],
 	[], // ["AC", "+-", "%", "x"],
@@ -12,7 +9,6 @@ const inputMap = [
 	[], // [1, 2, 3, "-"],
 	[], // [0, ".", "="],
 ];
-let currentFocus = [0, 0];
 
 const getRefs = screenInputRef => {
 	// ["screen"] :
@@ -40,35 +36,95 @@ const getRefs = screenInputRef => {
 	inputMap[5].push(buttons.operation[4].ref); // =
 };
 
-export const handleFocus = screenInputRef => {
+let currentFocus = [0, 0];
+const allCurrentFocusUpdater = [];
+
+const handleFocusNavigation = event => {
+	const [rowIndex, refIndex] = currentFocus;
+	switch (event.key) {
+		case "ArrowRight":
+			if (refIndex < inputMap[rowIndex].length - 1) inputMap[rowIndex][refIndex + 1].current.focus();
+			break;
+		case "ArrowLeft":
+			if (refIndex > 0) inputMap[rowIndex][refIndex - 1].current.focus();
+			break;
+		case "ArrowDown":
+			if (rowIndex === 0) inputMap[1][3].current.focus(); // Get faster to operation buttons
+			else if (rowIndex < inputMap.length - 1) inputMap[rowIndex + 1][refIndex].current.focus();
+			break;
+		case "ArrowUp":
+			if (rowIndex > 1) inputMap[rowIndex - 1][refIndex].current.focus();
+			if (rowIndex === 1) inputMap[0][0].current.focus(); // Only 1 input on 1st row (screen)
+			break;
+		default:
+			break;
+	}
+};
+
+const handleKeyboardOperations = (event, dispatch, screenInputRef) => {
+	switch (event.key) {
+		case "Enter":
+		case "=":
+			dispatch({ type: "operation", operation: "=" });
+			break;
+		case "+":
+			dispatch({ type: "operation", operation: "+" });
+			break;
+		case "-":
+			// Input allows "-" for typing, we don't want to activate a substraction at the same time
+			screenInputRef.current !== document.activeElement && dispatch({ type: "operation", operation: "−" });
+			break;
+		case "/":
+			dispatch({ type: "operation", operation: "÷" });
+			break;
+		case "*":
+		case "x":
+			dispatch({ type: "operation", operation: "×" });
+			break;
+		case "%":
+			dispatch({ type: "percentage" });
+			break;
+		default:
+			break;
+	}
+};
+
+const handleKeyboardDigits = event => {
+	for (const digit of buttons.digit) {
+		const isValidKey = digit.digit === event.key || (digit.digit === "." && event.key === ",");
+		if (isValidKey) digit.ref.current.click();
+	}
+};
+
+let getAllKeyboardInputs;
+
+export const handleKeyboardNavigation = (screenInputRef, dispatch) => {
 	getRefs(screenInputRef);
 
+	const updateCurrentFocus = (rowIndex, refIndex) => () => {
+		currentFocus = [rowIndex, refIndex];
+	};
 	inputMap.forEach((row, rowIndex) => {
 		row.forEach((ref, refIndex) => {
-			ref?.current.addEventListener("focus", () => {
-				currentFocus = [rowIndex, refIndex];
-			});
+			const updater = updateCurrentFocus(rowIndex, refIndex);
+			allCurrentFocusUpdater.push(updater);
+			ref?.current.addEventListener("focus", updater);
 		});
 	});
-	window.addEventListener("keydown", event => {
-		const [rowIndex, refIndex] = currentFocus;
-		switch (event.key) {
-			case "ArrowRight":
-				if (refIndex < inputMap[rowIndex].length - 1) inputMap[rowIndex][refIndex + 1].current.focus();
-				break;
-			case "ArrowLeft":
-				if (refIndex > 0) inputMap[rowIndex][refIndex - 1].current.focus();
-				break;
-			case "ArrowDown":
-				if (rowIndex === 0) inputMap[1][3].current.focus(); // Get faster to operation buttons
-				else if (rowIndex < inputMap.length - 1) inputMap[rowIndex + 1][refIndex].current.focus();
-				break;
-			case "ArrowUp":
-				if (rowIndex > 1) inputMap[rowIndex - 1][refIndex].current.focus();
-				if (rowIndex === 1) inputMap[0][0].current.focus(); // Only 1 input on 1st row (screen)
-				break;
-			default:
-				break;
-		}
+	getAllKeyboardInputs = event => {
+		handleFocusNavigation(event);
+		handleKeyboardOperations(event, dispatch, screenInputRef);
+		handleKeyboardDigits(event);
+	};
+
+	window.addEventListener("keydown", getAllKeyboardInputs);
+};
+
+export const cleanUpKeyboardNavigation = () => {
+	inputMap.forEach((row, rowIndex) => {
+		row.forEach((ref, refIndex) => {
+			ref?.current.removeEventListener("focus", allCurrentFocusUpdater.shift());
+		});
 	});
+	window.removeEventListener("keydown", getAllKeyboardInputs);
 };

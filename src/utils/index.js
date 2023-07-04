@@ -1,2 +1,2 @@
-export { handleResponsive } from "./responsive.js";
-export { handleFocus } from "./keyboardNavigation.js";
+export { handleResponsive, cleanUpHandleResponsive } from "./responsive.js";
+export { handleKeyboardNavigation, cleanUpKeyboardNavigation } from "./keyboardNavigation.js";

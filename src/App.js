@@ -6,26 +6,30 @@ import { motion } from "framer-motion";
 import { StyleSelector, History, Screen, Keypad, AlertIfObsolete } from "./components";
 
 import * as anim from "./utils/animation";
-import { handleResponsive, handleFocus } from "./utils";
+import {
+	handleResponsive,
+	cleanUpHandleResponsive,
+	handleKeyboardNavigation,
+	cleanUpKeyboardNavigation,
+} from "./utils";
 
 /*
 TODO:
-- refactoring
-- useReducer
-- useMemo/callback ?
 - check loading time of the font 
 */
 
 function App() {
 	const screenInputRef = useRef(null);
-	useEffect(() => {
-		handleFocus(screenInputRef); // Keyboard navigation
-		handleResponsive();
-		window.addEventListener("resize", handleResponsive);
-		return () => window.removeEventListener("resize", handleResponsive);
-	}, []);
-
 	const [state, dispatch] = useOperation();
+
+	useEffect(() => {
+		handleKeyboardNavigation(screenInputRef, dispatch); // Keyboard navigation
+		handleResponsive();
+		return () => {
+			cleanUpKeyboardNavigation();
+			cleanUpHandleResponsive();
+		};
+	}, [dispatch]);
 
 	console.log("current :", state.current);
 	console.log("result :", state.result);

@@ -10,6 +10,13 @@ export const actions = {
 			current: { value: "", display: "0", operation: action.operation },
 		};
 	},
+	set_current_value: (state, action) => ({
+		current: {
+			...state.current,
+			value: action.value,
+			display: action.value,
+		},
+	}),
 
 	// Secondary actions :
 	reset: (state, action) => ({
@@ -35,18 +42,6 @@ export const actions = {
 			oldValues: [],
 		};
 	},
-
-	// Basic actions :
-	set_current_value: (state, action) => ({
-		current: {
-			...state.current,
-			value: action.value,
-			display: action.value,
-		},
-	}),
-	set_current: (state, action) => ({ current: action.current }),
-	set_result: (state, action) => ({ result: action.result }),
-	set_old_values: (state, action) => ({ oldValues: action.oldValues }),
 };
 
 const isLastResultAsCurrentValue = state => state.result !== null && state.current.value === "";

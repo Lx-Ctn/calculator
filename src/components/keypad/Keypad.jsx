@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Button from "./button/Button";
 import css from "./Keypad.module.scss";
@@ -8,40 +8,6 @@ import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
 const Keypad = ({ state, dispatch, screenInputRef }) => {
 	const { current } = state;
-	useEffect(() => {
-		window.addEventListener("keypress", handleKeyboardOperations);
-		return () => {
-			window.removeEventListener("keypress", handleKeyboardOperations);
-		};
-	});
-
-	const handleKeyboardOperations = event => {
-		switch (event.key) {
-			case "Enter":
-			case "=":
-				handleOperation("=");
-				break;
-			case "+":
-				handleOperation("+");
-				break;
-			case "-":
-				// Input allows "-" for typing, we don't want to activate a substraction at the same time
-				screenInputRef.current !== document.activeElement && handleOperation("−");
-				break;
-			case "/":
-				handleOperation("÷");
-				break;
-			case "*":
-			case "x":
-				handleOperation("×");
-				break;
-			case "%":
-				handleSecondaryAction.percentage();
-				break;
-			default:
-				break;
-		}
-	};
 
 	const addToValue = digit => {
 		const newValue = getCleanValue(current, digit);
