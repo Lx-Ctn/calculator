@@ -10,7 +10,7 @@ const reducer = (state, action) => {
 const initialState = {
 	current: { value: "", display: "0", operation: "" },
 	result: null,
-	oldValues: [],
+	oldValues: [], // [{value: "", display: "", operation: "", result: null}]
 };
 
 const useOperation = () => {

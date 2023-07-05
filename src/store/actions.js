@@ -24,21 +24,24 @@ export const actions = {
 		result: null,
 	}),
 	toggle_minus: (state, action) => {
-		const newValues = isLastResultAsCurrentValue(state)
-			? getFormattedNumber(state.result.value * -1)
-			: getFormattedNumber(state.current.value * -1);
+		const newValues = getFormattedNumber(
+			(isLastResultAsCurrentValue(state) ? state.result.value : state.current.value) * -1
+		);
 		return { current: { ...state.current, ...newValues } };
 	},
 	percentage: (state, action) => {
-		const newValues = isLastResultAsCurrentValue(state)
-			? getFormattedNumber(state.result.value / 100)
-			: getFormattedNumber(state.current.value / 100);
+		const newValues = getFormattedNumber(
+			(isLastResultAsCurrentValue(state) ? state.result.value : state.current.value) / 100
+		);
 		return { current: { ...state.current, ...newValues } };
 	},
 	clear_history: (state, action) => {
-		const lastOperation = state.oldValues[0];
+		// keep current value, else get last result as new current :
+		const lastValue = state.current.value ? state.current : state.result;
+		// If no last result (juste launch app or after reset "AC" button), back to default values.
 		return {
-			current: { ...lastOperation.result, operation: "" },
+			current: { value: "", display: 0, ...lastValue, operation: "" },
+			result: null,
 			oldValues: [],
 		};
 	},
