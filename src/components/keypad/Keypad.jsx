@@ -1,98 +1,35 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import Button from "./button/Button";
-import Styles from "./Keypad.module.scss";
-import { buttons } from "../../utils/operations";
+import css from "./Keypad.module.scss";
 import { sectionVariants, digitButtonsVariants, operationButtonsVariants } from "../../utils/animation";
-import { getFormattedNumber } from "../../utils/getFormattedNumber";
-import { MAX_INPUT_LENGTH } from "../../utils/constants";
+import { buttons } from "../../operations";
+import { MAX_INPUT_LENGTH } from "../../utils/CONSTANTS";
 
-const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef }) => {
-	useEffect(() => {
-		window.addEventListener("keypress", handleKeyboardOperations);
-		return () => {
-			window.removeEventListener("keypress", handleKeyboardOperations);
-		};
-	});
-
-	const handleKeyboardOperations = event => {
-		switch (event.key) {
-			case "Enter":
-			case "=":
-				handleOperation("=");
-				break;
-			case "+":
-				handleOperation("+");
-				break;
-			case "-":
-				// Input allows "-" for typing, we don't want to activate a substraction at the same time
-				inputRef.current !== document.activeElement && handleOperation("−");
-				break;
-			case "/":
-				handleOperation("÷");
-				break;
-			case "*":
-			case "x":
-				handleOperation("×");
-				break;
-			case "%":
-				handleSecondaryAction.percentage();
-				break;
-			default:
-				break;
-		}
-	};
-
-	const updateCurrentValue = newValue => {
-		setCurrent({ ...current, value: newValue, display: newValue });
-	};
+const Keypad = ({ state, dispatch, screenInputRef }) => {
+	const { current } = state;
 
 	const addToValue = digit => {
-		const valueToUpdate =
-			current.value === "0" || current.value === "" ? (digit === "." ? "0" : "") : current.value.toString(); // loose the 1st 0 expect if "." follow
-
-		const authorisedDigit = digit === "." && valueToUpdate.includes(".") ? "" : digit; // only one "." is accepted
-		const newValue = valueToUpdate + authorisedDigit;
+		const newValue = getCleanValue(current, digit);
 
 		// Show the red caret if the value is too long :
 		const isValueTooLong = newValue.length > MAX_INPUT_LENGTH;
 		if (isValueTooLong) {
-			inputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
-			inputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
-		} else updateCurrentValue(newValue);
-	};
-	const handleOperation = operation => {
-		(operation === "=" || current.value !== "" || current.operation === "") && getResult(operation);
-		setCurrent({ value: "", display: "0", operation });
+			screenInputRef.current.focus(); // If the input was clicked, caret will be moved at the start when focus
+			screenInputRef.current.selectionStart = MAX_INPUT_LENGTH; // so we move the caret to the end
+		} else dispatch({ type: "set_current_value", value: newValue });
 	};
 
+	const handleOperation = operation => dispatch({ type: "operation", operation });
+
 	const handleSecondaryAction = {
-		reset: () => {
-			setResult(null);
-			setCurrent({ value: "", display: "0", operation: "" });
-		},
-		toggleMinus: () => {
-			if (result !== null && current.value === "") {
-				const newValues = getFormattedNumber(result.value * -1);
-				setResult({ ...newValues });
-			} else {
-				const newValues = getFormattedNumber(current.value * -1);
-				setCurrent({ ...current, ...newValues });
-			}
-		},
-		percentage: () => {
-			if (result !== null && current.value === "") {
-				const newValues = getFormattedNumber(result.value / 100);
-				setResult({ ...newValues });
-			} else {
-				const newValues = getFormattedNumber(current.value / 100);
-				setCurrent({ ...current, ...newValues });
-			}
-		},
+		reset: () => dispatch({ type: "reset" }),
+		toggleMinus: () => dispatch({ type: "toggle_minus" }),
+		percentage: () => dispatch({ type: "percentage" }),
 	};
 
 	return (
-		<motion.section className={Styles.container} variants={sectionVariants}>
+		<motion.section className={css._} variants={sectionVariants}>
 			<motion.div className="default" variants={digitButtonsVariants}>
 				{buttons.digit.map(({ digit }) => (
 					<Button key={digit} onClick={() => addToValue(digit)} isWide={digit === "0"}>
@@ -101,7 +38,7 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef })
 				))}
 			</motion.div>
 
-			<motion.div className={Styles.operation} variants={operationButtonsVariants}>
+			<motion.div className={css.operation} variants={operationButtonsVariants}>
 				{buttons.operation.map(({ operation }) => (
 					<Button buttonStyle="operation" key={operation} onClick={() => handleOperation(operation)}>
 						{operation}
@@ -109,7 +46,7 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef })
 				))}
 			</motion.div>
 
-			<motion.div className={Styles.secondary}>
+			<motion.div className={css.secondary}>
 				{buttons.secondary.map(({ action, secondary }) => (
 					<Button buttonStyle="secondary" key={action} onClick={handleSecondaryAction[action]}>
 						{secondary}
@@ -120,3 +57,13 @@ const Keypad = ({ current, setCurrent, result, setResult, getResult, inputRef })
 	);
 };
 export default Keypad;
+
+const getCleanValue = (current, digit) => {
+	const valueIsNull = current.value === "0" || current.value === "";
+	// loose the 1st 0 unless "." follow :
+	const valueToUpdate = valueIsNull ? (digit === "." ? "0" : "") : current.value.toString();
+	// only one "." is accepted :
+	const authorisedDigit = digit === "." && valueToUpdate.includes(".") ? "" : digit;
+
+	return valueToUpdate + authorisedDigit;
+};

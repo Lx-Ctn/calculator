@@ -3,6 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import css from "./AlertIfObsolete.module.scss";
 import { ObsoleteIcon } from "./ObsoleteIcon";
 
+/* 
+Alert if the browser is obsolete (based on the latest supported expression configured in babel),
+And offer a direct link to update it base on which browser
+*/
+
 const AlertIfObsolete = () => {
 	const obsoleteBrowser = isBrowserObsolete();
 	return <>{obsoleteBrowser ? <ObsoleteAlert browser={obsoleteBrowser} /> : null}</>;
@@ -31,7 +36,7 @@ const ObsoleteAlert = ({ browser }) => {
 						exit={{ opacity: 0, transition: { duration: 0.3 } }}
 					>
 						<motion.div
-							initial={{ scale: 0 }}
+							initial={{ scale: 0.2 }}
 							animate={{ scale: 1, transition: { duration: 0.3 } }}
 							exit={{ scale: 0, transition: { duration: 0.2, delay: 0.1 } }}
 						>

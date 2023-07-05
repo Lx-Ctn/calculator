@@ -1,4 +1,4 @@
-.container {
+._ {
 	padding: 0.3em 0.5em;
 	margin-bottom: 0.25em;
 	border-radius: calc(3 * var(--border-radius));
@@ -21,6 +21,7 @@
 		width: 1.3em;
 		font-size: 0.8em;
 
+		// When a operation is active :
 		&.withBorder {
 			border-right: 1px solid #333;
 		}
@@ -51,7 +52,7 @@
 			}
 
 			&:focus-visible::selection {
-				background-color: var(--focus-on-black-color, #fff);
+				background-color: var(--contrast-on-black-color, #fff);
 				color: #111;
 			}
 		}

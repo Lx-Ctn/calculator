@@ -1,80 +1,35 @@
-import "./App.scss";
-import React, { useState, useRef, useEffect } from "react";
+import "./styles/App.scss";
+import React, { useRef, useEffect } from "react";
+import useOperation from "./store/useOperation";
+
 import { motion } from "framer-motion";
 import { StyleSelector, History, Screen, Keypad, AlertIfObsolete } from "./components";
 
 import * as anim from "./utils/animation";
-import { getFormattedNumber } from "./utils/getFormattedNumber";
-import { handleResponsive } from "./utils/responsive";
-import { handleFocus } from "./utils/selectFocus";
-
-/*
-TODO:
-- factorisation
-- useReducer
-- useMemo/callback
-- typo temps de chargement
-- reset history should keep the number on screen.
-- last result stay display on screen, but when erase : it should'nt reappear
-- vérifier le css des boutton d'action secondaire : bug sur la taille lors de la rotation sur safari -> bug de scale en fait sur safari
-*/
+import {
+	handleResponsive,
+	cleanUpHandleResponsive,
+	handleKeyboardNavigation,
+	cleanUpKeyboardNavigation,
+} from "./utils";
 
 function App() {
-	const inputRef = useRef(null);
+	const screenInputRef = useRef(null);
+	const [state, dispatch] = useOperation();
+
 	useEffect(() => {
-		handleFocus(inputRef);
+		handleKeyboardNavigation(screenInputRef, dispatch); // Keyboard navigation
 		handleResponsive();
-		window.addEventListener("resize", handleResponsive);
-		return () => window.removeEventListener("resize", handleResponsive);
-	}, []);
+		return () => {
+			cleanUpKeyboardNavigation();
+			cleanUpHandleResponsive();
+		};
+	}, [dispatch]);
 
-	const [oldValues, setOldValues] = useState([]);
-	const [current, setCurrent] = useState({ value: "", display: "0", operation: "" });
-	const [result, setResult] = useState(null);
+	console.log("current :", state.current);
+	console.log("result :", state.result);
+	console.table(state.oldValues);
 
-	console.log("current :", current);
-	console.log("result :", result);
-	console.table(oldValues);
-
-	const getPrevDisplay = oldValues.length ? oldValues[0].display : "0";
-
-	const getResult = nextOperation => {
-		let total = 0;
-		const isCurrentValue = current.value !== "" || result === null;
-
-		// If there is no current value entered, we repeat last operation :
-		const old = oldValues[0] ?? { value: "", display: 0, result: null, operation: "" };
-		const prevValue = result === null ? +old.value : +result.value;
-		const oldOperation = nextOperation === "=" ? old.operation : nextOperation;
-		const operation = isCurrentValue ? current.operation : oldOperation;
-		const currentValue = isCurrentValue ? +current.value : +old.value;
-
-		switch (operation) {
-			case "×":
-				total = prevValue * currentValue;
-				break;
-			case "÷":
-				total = prevValue / currentValue;
-				break;
-			case "−":
-				total = prevValue - currentValue;
-				break;
-			case "+":
-				total = prevValue + currentValue;
-				break;
-			default:
-				total = null;
-				break;
-		}
-		const formattedTotal = getFormattedNumber(total);
-		setResult(formattedTotal);
-
-		const formattedCurrent = { ...current, display: getFormattedNumber(current.value).display }; // Get rid of extra "0" and ending "."
-		const dataToSave = isCurrentValue ? formattedCurrent : old;
-		setOldValues([{ ...dataToSave, result: formattedTotal }, ...oldValues]);
-	};
-
-	//
 	return (
 		<>
 			<AlertIfObsolete />
@@ -84,22 +39,9 @@ function App() {
 
 			<motion.main variants={anim.mainVariants} initial="initial" animate="animate" exit="exit">
 				<StyleSelector />
-				<History historyData={oldValues} setOldValues={setOldValues} />
-				<Screen
-					current={current}
-					setCurrent={setCurrent}
-					result={result}
-					inputRef={inputRef}
-					prevDisplay={getPrevDisplay}
-				/>
-				<Keypad
-					current={current}
-					setCurrent={setCurrent}
-					result={result}
-					setResult={setResult}
-					getResult={getResult}
-					inputRef={inputRef}
-				/>
+				<History historyData={state.oldValues} dispatch={dispatch} />
+				<Screen state={state} dispatch={dispatch} screenInputRef={screenInputRef} />
+				<Keypad state={state} dispatch={dispatch} screenInputRef={screenInputRef} />
 			</motion.main>
 		</>
 	);
