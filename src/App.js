@@ -13,11 +13,6 @@ import {
 	cleanUpKeyboardNavigation,
 } from "./utils";
 
-/*
-TODO:
-- check loading time of the font 
-*/
-
 function App() {
 	const screenInputRef = useRef(null);
 	const [state, dispatch] = useOperation();
