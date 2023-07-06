@@ -32,7 +32,6 @@ export const getResult = (nextOperation, state) => {
 	const getFormattedCurrent = () => ({ ...getFormattedNumber(current.value), operation: current.operation }); // Get rid of extra "0" and ending "."
 	const dataToSave = isCurrentValue ? getFormattedCurrent() : { ...lastCalculation, operation };
 
-	console.log({ operation, prevValue, currentValue });
 	return {
 		result: total, // need to keep a separate result to be able to reset without erase history
 		oldValues: [{ ...dataToSave, result: total }, ...oldValues],

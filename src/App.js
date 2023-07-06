@@ -18,17 +18,13 @@ function App() {
 	const [state, dispatch] = useOperation();
 
 	useEffect(() => {
-		handleKeyboardNavigation(screenInputRef, dispatch); // Keyboard navigation
+		handleKeyboardNavigation(screenInputRef, dispatch);
 		handleResponsive();
 		return () => {
 			cleanUpKeyboardNavigation();
 			cleanUpHandleResponsive();
 		};
 	}, [dispatch]);
-
-	console.log("current :", state.current);
-	console.log("result :", state.result);
-	console.table(state.oldValues);
 
 	return (
 		<>
