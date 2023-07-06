@@ -18,10 +18,18 @@ const darkColor = new Color(mainColor, {
 });
 
 // Will show on default buttons :
-const defaultButtonColor = new Color({ ref: mainColor, properties: { saturation: 20, light: 25 } });
+const defaultButtonColor = new Color({
+	ref: mainColor,
+	properties: { light: 25 },
+	offsets: { saturation: sat => (sat > 20 ? 20 : sat) },
+});
 
 // Will show on secondary action buttons :
-const secondaryButtonColor = new Color({ ref: mainColor, properties: { saturation: 30, light: 83 } });
+const secondaryButtonColor = new Color({
+	ref: mainColor,
+	properties: { light: 83 },
+	offsets: { saturation: sat => (sat > 30 ? 30 : sat) },
+});
 
 // Text on main color :
 const lightContrastColor = new Color(mainColor, {
