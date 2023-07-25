@@ -11,11 +11,13 @@ const backgroundColor = new Color(mainColor, { saturation: sat => sat / 2, light
 // Selected style :
 const secondaryColor = new Color(mainColor, { saturation: -30, light: -20 });
 
-// Text & border in style selector :
+// Text & border in style selector and history :
 const darkColor = new Color(mainColor, {
-	saturation: -75,
-	light: light => (light > 50 ? 35 : light < 20 ? 100 : light - 15),
+	saturation: -70,
+	light: light => (light > 50 ? 35 : light < 35 ? 100 : light - 15),
 });
+// For history reset button :
+const darkColorFade = new Color({ ref: darkColor, alpha: 40 });
 
 // Will show on default buttons :
 const defaultButtonColor = new Color({
@@ -70,6 +72,7 @@ export const setColors = color => {
 	appStyle.setProperty("--secondary-button-color", secondaryButtonColor.toHsl());
 	appStyle.setProperty("--default-button-color", defaultButtonColor.toHsl());
 	appStyle.setProperty("--dark-color", darkColor.toHsl());
+	appStyle.setProperty("--dark-color-fade", darkColorFade.toHsl());
 	appStyle.setProperty("--light-contrast-color", lightContrastColor.toHsl());
 	appStyle.setProperty("--contrast-color", contrastColor.toHsl());
 	appStyle.setProperty("--contrast-on-black-color", contrastOnBlackColor.toHsl());
