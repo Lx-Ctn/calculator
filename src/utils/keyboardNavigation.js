@@ -89,10 +89,12 @@ const handleKeyboardOperations = (event, dispatch, screenInputRef) => {
 	}
 };
 
-const handleKeyboardDigits = event => {
-	for (const digit of buttons.digit) {
-		const isValidKey = digit.digit === event.key || (digit.digit === "." && event.key === ",");
-		if (isValidKey) digit.ref.current.click();
+const handleKeyboardDigits = (event, screenInputRef) => {
+	if (screenInputRef.current !== document.activeElement) {
+		for (const digit of buttons.digit) {
+			const isValidKey = digit.digit === event.key || (digit.digit === "." && event.key === ",");
+			if (isValidKey) digit.ref.current.click();
+		}
 	}
 };
 
@@ -114,7 +116,7 @@ export const handleKeyboardNavigation = (screenInputRef, dispatch) => {
 	getAllKeyboardInputs = event => {
 		handleFocusNavigation(event);
 		handleKeyboardOperations(event, dispatch, screenInputRef);
-		handleKeyboardDigits(event);
+		handleKeyboardDigits(event, screenInputRef);
 	};
 
 	window.addEventListener("keydown", getAllKeyboardInputs);

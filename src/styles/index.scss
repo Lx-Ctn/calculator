@@ -64,9 +64,30 @@
 		outline: none;
 	}
 
-	:focus-visible {
-		outline: 0.1em solid var(--contrast-color);
-		outline-offset: 0.1em;
+	:focus-visible,
+	:focus {
+		outline: 0.17rem solid var(--contrast-color);
+		outline-offset: 0.13rem;
 		transition: outline-color 0.4s;
 	}
+	button:focus-visible {
+		outline-width: 0.21rem;
+		outline-offset: 0.17rem;
+	}
+	/* button,
+	input {
+		position: relative;
+	}
+	:focus-visible::before {
+		content: "";
+		position: absolute;
+		inset: -0.3rem;
+		border: 0.13rem solid var(--contrast-color);
+		border-radius: inherit;
+	}
+	button:focus-visible::before {
+		inset: -0.37rem;
+		border-width: 0.21rem;
+		border-radius: inherit;
+	} */
 }
