@@ -64,6 +64,8 @@ const handleFocusNavigation = event => {
 const handleKeyboardOperations = (event, dispatch, screenInputRef) => {
 	switch (event.key) {
 		case "Enter":
+			document.activeElement.tagName !== "BUTTON" && dispatch({ type: "operation", operation: "=" });
+			break;
 		case "=":
 			dispatch({ type: "operation", operation: "=" });
 			break;
