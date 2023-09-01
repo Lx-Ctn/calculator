@@ -18,6 +18,9 @@ const Button = props => {
 		<motion.div className={`${Styles.container} ${props.isWide ? Styles.wide : ""}`} variants={buttonVariants}>
 			<motion.button
 				ref={ref}
+				type="button"
+				translate="no"
+				aria-label={props.ariaLabel}
 				className={Styles[props.buttonStyle]}
 				onClick={props.onClick}
 				style={props.style}

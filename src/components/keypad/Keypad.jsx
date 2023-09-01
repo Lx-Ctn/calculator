@@ -48,7 +48,12 @@ const Keypad = ({ state, dispatch, screenInputRef }) => {
 
 			<motion.div className={css.secondary}>
 				{buttons.secondary.map(({ action, secondary }) => (
-					<Button buttonStyle="secondary" key={action} onClick={handleSecondaryAction[action]}>
+					<Button
+						buttonStyle="secondary"
+						key={action}
+						ariaLabel={action}
+						onClick={handleSecondaryAction[action]}
+					>
 						{secondary}
 					</Button>
 				))}

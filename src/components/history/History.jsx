@@ -20,7 +20,11 @@ const History = ({ historyData, dispatch }) => {
 					{historyData.map((data, index) => <li key={index}>{historyLineFormat(data)}</li>).reverse()}
 				</ul>
 			</div>
-			{historyData.length > 0 && <button onClick={clearHistory}>x</button>}
+			{historyData.length > 0 && (
+				<button onClick={clearHistory} aria-label="Clear history">
+					x
+				</button>
+			)}
 		</motion.section>
 	);
 };
